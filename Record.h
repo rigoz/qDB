@@ -35,6 +35,8 @@ public:
 	// Helpers
 	static void DeepCopy(Record *r1, Record *r2);
 	Record<Item>* Next(Record *r2);
+	Record<Item>* Prev(Record *r2);
+	Record<Item>* Update(const Item &item, Record *prev = NULL, Record *next = NULL);
 };
 
 #include "Record.cpp"
