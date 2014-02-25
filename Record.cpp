@@ -99,3 +99,25 @@ Record<Item>* Record<Item>::Next(Record *r)
 	m_next = r;
 	return r;
 }
+
+
+template <class Item>
+Record<Item>* Record<Item>::Prev(Record *r)
+{
+	m_prev = r;
+	return r;
+}
+
+template <class Item>
+Record<Item>* Record<Item>::Update(const Item &item, Record *prev, Record *next)
+{
+	m_info = item;
+	
+	if (prev != NULL)
+	    m_prev = prev;
+	
+	if (next != NULL)
+	    m_next = next;
+	
+	return this;
+}
