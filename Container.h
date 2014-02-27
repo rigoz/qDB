@@ -50,13 +50,15 @@ private:
 		}
 	
 		// Helpers
-		static void DeepCopy(Record *r1, Record *r2);
+		static Record* DeepCopy(Record *prev, Record *curr);
 		void Update(const Item &item, Record *prev = NULL, Record *next = NULL);
-		Item GetData();
+		Item GetData() const;
 	};
 	
 	Record *m_base;
 	Record *m_end;
+	
+	void SetEnd(Record *record);
 
 public:
 	class Iterator
@@ -124,7 +126,7 @@ public:
 		
 		friend std::ostream& operator<<(std::ostream &os, const typename Container<Item>::Const_iterator &i)
 		{
-			    return os << *(i.pointer);  
+			    return os << *(i.pointer);
 		}
 		
 		Const_iterator& operator++()
@@ -153,7 +155,7 @@ public:
 			return t;
 		}
 		
-		Record* operator*() const
+		const Record* operator*() const
 		{
 			return pointer; 
 		}
@@ -175,19 +177,24 @@ public:
 	
 	// List management
 	void Insert(const Item &item);
-	void Remove(Record *r);
+	void Remove(const Item &item);
 	void RemoveAll(const Item &item);
 	Record* Find(const Item &item);
 
 	// Helpers
 	Iterator Begin();
-	Iterator End();
-	Iterator First();
-	Iterator Last();
 	Const_iterator Begin() const; // First element
+	
+	Iterator End();
 	Const_iterator End() const; // Last + 1
-	Const_iterator First() const; // Begin -1
-	Const_iterator Last() const; // Last Element
+	
+	Iterator First();
+	Const_iterator First() const; // Begin - 1
+	
+	Iterator Last();
+	Const_iterator Last() const; // Last element
+	
+	
 	bool IsEmpty();
 	void Clear();
 };
