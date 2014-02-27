@@ -15,12 +15,21 @@ Container<Item>::Container(const Item &item)
 template <class Item>
 Container<Item>::Container(const Container &cont)
 {
-    if (*this != cont)
-    {
-		m_base = new Record((cont.m_base)->m_info, (cont.m_base)->m_prev, );
-		m_prev = NULL;
-		Record::DeepCopy(this, record.m_next);
-    }
+	if (*this != cont)
+	{	m_base = NULL;
+		m_end = NULL;
+		m_base = new Record(*(cont.m_base));
+		SetEnd(m_base);
+	}
+}
+
+template <class Item>
+void Container<Item>::SetEnd(Record *record)
+{   
+    if (record->m_next == NULL)
+	m_end = record;
+    else
+	SetEnd(record->m_next);
 }
 
 template <class Item>
@@ -48,21 +57,28 @@ bool Container<Item>::operator!=(const Container &cont) const
 template <class Item>
 Container<Item>& Container<Item>::operator=(const Container &cont)
 {
-  // deep copy  
-    
+	if (*this != cont)
+	{	m_base = NULL;
+		m_end = NULL;
+		m_base = new Record(*(cont.m_base));
+		SetEnd(m_base);
+	}
 }
 
 template <class Item>
 Container<Item> Container<Item>::operator+(const Container &cont) const
 {
-  // union  
-    
+	Container<Item> c(*this);
+	for(Const_iterator i = cont.Begin(); i != cont.End(); ++i)
+	    c.Insert((*i)->GetData());
+	
+	return c;
 }
 
 template <class Item>
 Container<Item> Container<Item>::operator-(const Container &cont) const
 {
-    // split
+    	
 }
 
 template <class Item>
@@ -87,6 +103,19 @@ void Container<Item>::Insert(const Item &item)
 	    m_end->m_next = new Record(item, m_end);
 	    m_end = m_end->m_next;
     }
+}
+
+template <class Item>
+void Container<Item>::Remove(const Item &item)
+{
+    if (m_base == NULL)
+	    return;
+    
+    for(Iterator i = Begin(); i != End(); ++i)
+	    if ((*i)->GetData() == item)
+	    {
+		    //remove
+	    }
 }
 
 template <class Item>
