@@ -6,9 +6,9 @@ Container<Item>::Record::Record(const Container<Item>::Record &record)
 {
 	if (*this != record)
 	{
-		m_info = record.m_info;
 		m_prev = NULL;
-		DeepCopy(this, record.m_next);
+		m_info = record.m_info;
+		m_next = DeepCopy(this, record.m_next);
 	}
 }
 
@@ -66,13 +66,15 @@ typename Container<Item>::Record& Container<Item>::Record::operator=(const Recor
 }
 
 template <class Item>
-void Container<Item>::Record::DeepCopy(Container<Item>::Record *r1, Container<Item>::Record *r2)
-{
-	if (r2 == NULL)
-		return;
+typename Container<Item>::Record* Container<Item>::Record::DeepCopy(Container<Item>::Record *prev , Container<Item>::Record *curr)
+{	
+	if (curr == NULL)
+	    return NULL;
 	
-	r1->m_next = new Container<Item>::Record(r2->m_info, r1);
-	DeepCopy(r1->m_next, r2->m_next);
+	Record *t = new Record(curr->m_info);
+	t->m_prev = prev;
+	t->m_next = DeepCopy(t, curr->m_next);
+	return t;                                                   
 }
 
 template <class Item>
@@ -88,7 +90,7 @@ void Container<Item>::Record::Update(const Item &item, Container<Item>::Record *
 }
 
 template <class Item>
-Item Container<Item>::Record::GetData()
+Item Container<Item>::Record::GetData() const
 {
 	return m_info;
 }
