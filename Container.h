@@ -2,7 +2,7 @@
 #define CONTAINER_H
 
 #include <iostream>
-
+#include "SharedDefines.h"
 
 
 template<class Item> class Container;
@@ -45,8 +45,6 @@ private:
 			
 			if (record.m_next != NULL)
 				os << *(record.m_next);
-			else
-				os << "\n";
 				
 			return os;   
 		}
@@ -63,6 +61,8 @@ private:
 	unsigned int m_size;
 	
 	void SetEnd(Record *record);
+	void SetEmpty();
+	void RemoveBoundaries(Record *limit);
 
 public:
 	class Iterator
