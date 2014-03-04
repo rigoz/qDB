@@ -1,9 +1,7 @@
 template <class Item>
 Container<Item>::Container()
 {
-	m_base = NULL;
-	m_end = NULL;
-	m_size = 0;
+	SetEmpty();
 }
 
 template <class Item>
@@ -19,12 +17,18 @@ Container<Item>::Container(const Container &cont)
 {
 	if (this != &cont)
 	{
-		// Call to Record::Record(const Record&) for a deep copy
-		m_base = new Record(*(cont.m_base));
-		m_size = 1;
+		if (cont.IsEmpty() == false) // "cont" has elements to copy
+		{
+			m_base = new Record(*(cont.m_base)); // Call to Record copy constructor for a deep copy
+			m_size = cont.m_size;
 		
-		// Find the new end of the list
-		SetEnd(m_base);
+			if (m_size == 1)
+				m_end = m_base;
+			else
+				SetEnd(m_base); // Find the new end of the list
+		}
+		else // "cont" is empty
+			SetEmpty();
 	}
 }
 
@@ -34,10 +38,7 @@ void Container<Item>::SetEnd(Record *record)
     if (record == NULL || record->m_next == NULL)
 		m_end = record;
     else
-	{
-		m_size++;
 		SetEnd(record->m_next);
-	}
 }
 
 template <class Item>
@@ -120,7 +121,7 @@ std::ostream& operator<<(std::ostream &os, const Container<Item> &cont)
     if (cont.IsEmpty())
 	return os << "<Empty container>\n";
     
-    return os << *(cont.m_base) << "size = " << cont.Size() << "\n"; // call op<< overloaded on Record object
+    return os << *(cont.m_base) << ", size: " << cont.Size() << "\n"; // call op<< overloaded on Record object
 }
 
 // Inserts a new record to the back of the list
@@ -154,29 +155,9 @@ void Container<Item>::Remove(Record *record)
 		return;
 	}
 	
-	if (record == m_base) // Removing the start of the list with size > 1
+	if (record == m_base || record == m_end) // Removing the start or the end of the list with size > 1
 	{
-		m_base = record->m_next;
-		if (m_base != NULL) // Just in case. With size > 1, this should never be NULL
-			m_base->m_prev = NULL;
-		
-		record->m_next = NULL; // avoid cascade deletion
-		delete record;
-		
-		m_size--;
-		return;
-	}
-		
-	if (record == m_end) // Removing last element with size > 1
-	{
-		m_end = record->m_prev;
-		if (m_end != NULL) // Just in case. With size > 1, this should never be NULL
-			m_end->m_next = NULL;
-		
-		record->m_next = NULL; // avoid cascade deletion
-		delete record;
-		
-		m_size--;
+		RemoveBoundaries(record);
 		return;
 	}
 	
@@ -186,46 +167,41 @@ void Container<Item>::Remove(Record *record)
 	Record *prev = record->m_prev;
 	Record *next = record->m_next;
 	
-	// Just in case. These checks should never be NULL when record != m_base && record != m_end
-	if (prev != NULL)
-		prev->m_next = next;
+	ASSERT_PTR(prev != NULL);
+	prev->m_next = next;
 		
-	if (next != NULL)
-		next->m_prev = prev;
+	ASSERT_PTR(next != NULL);
+	next->m_prev = prev;
 	
 	record->m_next = NULL; // avoid cascade deletion
 	
 	delete record;
 	
 	m_size--;
-	
 }
 
 // Removes the first occurrence of "item" from the list
 template <class Item>
 void Container<Item>::Remove(const Item &item)
 {
-    if (m_base == NULL)
-	    return;
-    
-    Remove(Find(item));
+    if (IsEmpty() == false)
+		Remove(Find(item));
 }
 
 // Removes all the occurrences of "item" from the list
 template <class Item>
 void Container<Item>::RemoveAll(const Item &item)
 {
-    if (m_base == NULL)
+    if (IsEmpty())
 	    return;
    
     for(Iterator i = Begin(); i != End();)
 	    if ((*i)->GetData() == item)
 	    {
-			Record *next = (*i)->m_next; // Save next pointer
+			Iterator next((*i)->m_next); // Save next pointer
 			Remove(*i);
 			
-			// move iterator to the next element
-			i = Iterator(next);
+			i = next; // move iterator to the next element
 	    }
 		else
 			++i;
@@ -236,7 +212,7 @@ void Container<Item>::RemoveAll(const Item &item)
 template <class Item>
 typename Container<Item>::Record* Container<Item>::Find(const Item &item)
 {
-	if (m_base == NULL)
+	if (IsEmpty())
 		return NULL;
 		
 	for (Iterator i = Begin(); i != End(); ++i)
@@ -247,7 +223,7 @@ typename Container<Item>::Record* Container<Item>::Find(const Item &item)
 template <class Item>
 const typename Container<Item>::Record* Container<Item>::Find(const Item &item) const
 {
-	if (m_base == NULL)
+	if (IsEmpty())
 		return NULL;
 		
 	for (Const_iterator i = Begin(); i != End(); ++i)
@@ -259,10 +235,8 @@ const typename Container<Item>::Record* Container<Item>::Find(const Item &item) 
 template <class Item>
 void Container<Item>::Update(Record *record, const Item &item)
 {
-	if (record == NULL)
-		return;
-		
-	record->m_info = item;
+	if (record != NULL)
+		record->m_info = item;
 }
 
 template <class Item>
@@ -334,13 +308,45 @@ bool Container<Item>::IsEmpty() const
 template <class Item>
 void Container<Item>::Clear()
 {
-    delete m_base;
+    delete m_base; // cascade deletion on Records
+	
+	SetEmpty(); // reset pointers and size
 }
 
 template <class Item>
 unsigned int Container<Item>::Size() const
 {
     return m_size;
+}
+
+template <class Item>
+void Container<Item>::SetEmpty()
+{
+    m_base = NULL;
+	m_end = NULL;
+	m_size = 0;
+}
+
+template <class Item>
+void Container<Item>::RemoveBoundaries(Record *limit)
+{
+	if (limit == m_base)
+	{
+		m_base = limit->m_next;
+		ASSERT_PTR(m_base != NULL);
+		m_base->m_prev = NULL;
+	}
+	else
+	{
+		m_end = limit->m_prev;
+		ASSERT_PTR(m_end != NULL);
+		m_end->m_next = NULL;
+	}
+		
+	limit->m_next = NULL; // avoid cascade deletion
+	delete limit;
+		
+	m_size--;
 }
 
 template <class Item>
