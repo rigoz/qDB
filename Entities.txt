@@ -1,0 +1,82 @@
+AgrarianProduct
+{
+Attributes:
+    id;
+    creationDate;
+    stockPile;
+    pricePerUnit;
+    conservation;
+    qualityControl;
+    lastControlDate;
+
+Methods:
+    virtual GetExpirationDate();
+    virtual GetNutritionalInfo();
+    virtual Sell();
+    virtual GetPrice();
+    Add(amount);
+    Withdraw(amount);
+
+};
+
+
+Meat : public AgrarianProduct
+{
+Attributes:
+    animal;
+    age;
+    weight;
+    muscularMass;
+    coldRoomId;
+    coldRoomSector;
+    
+Methods:
+    GetProteins();
+    GetColdRoomInfo();
+    
+    static FindMeat(coldRoomId, coldRoomSector);
+
+
+};
+
+AnimalDerived : public AgrarianProduct
+{
+Attributes:
+    animal;
+    type;
+    weight;
+    calories;
+    carbohydrates;
+    fat;
+    stockId;
+    stockSection;
+
+Methods:
+    GetCalories();
+    GetCarbohydrates();
+    GetFat();
+
+    GetStockInfo();
+
+    static FindDerived(stockId, stockSection);
+};
+
+Wine : public AgrarianProduct
+{
+Attributes:
+    name;
+    type;
+    derivedFrom;
+    wineryId;
+    winerySection;
+    barrelNumber;
+    aging;
+    alcohol;
+    bottle;
+    
+
+Methods:
+    static FindWine(wineryId, winerySection, barrel);
+    
+
+}
