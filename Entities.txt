@@ -1,82 +1,72 @@
-AgrarianProduct
-{
-Attributes:
-    id;
-    creationDate;
-    stockPile;
-    pricePerUnit;
-    conservation;
-    qualityControl;
-    lastControlDate;
+Match:
+	id
+	result
+	referee
+	date
+	location
+	
+	GetId()
+	GetResult()
+	GetReferee()
+	GetDate()
+	GetLocation()
+	
+	Postpone()
+	IsClosed()
 
-Methods:
-    virtual GetExpirationDate();
-    virtual GetNutritionalInfo();
-    virtual Sell();
-    virtual GetPrice();
-    Add(amount);
-    Withdraw(amount);
+	
 
-};
-
-
-Meat : public AgrarianProduct
-{
-Attributes:
-    animal;
-    age;
-    weight;
-    muscularMass;
-    coldRoomId;
-    coldRoomSector;
-    
-Methods:
-    GetProteins();
-    GetColdRoomInfo();
-    
-    static FindMeat(coldRoomId, coldRoomSector);
+FootballMatch:
+	homeTeam
+	guestTeam
+	league
+	scorersHome
+	scorersGuest
+	yellowsHome
+	yellowsGuest
+	possession
+	
+	GetHomeTeam()
+	GetGuestTeam()
+	GetWinner()
+	GetLoser()
 
 
-};
-
-AnimalDerived : public AgrarianProduct
-{
-Attributes:
-    animal;
-    type;
-    weight;
-    calories;
-    carbohydrates;
-    fat;
-    stockId;
-    stockSection;
-
-Methods:
-    GetCalories();
-    GetCarbohydrates();
-    GetFat();
-
-    GetStockInfo();
-
-    static FindDerived(stockId, stockSection);
-};
-
-Wine : public AgrarianProduct
-{
-Attributes:
-    name;
-    type;
-    derivedFrom;
-    wineryId;
-    winerySection;
-    barrelNumber;
-    aging;
-    alcohol;
-    bottle;
-    
-
-Methods:
-    static FindWine(wineryId, winerySection, barrel);
-    
-
-}
+BasketballMatch:
+	homeTeam
+	guestTeam
+	league
+	foulsHome
+	foulsGuest
+	timeoutsHome
+	timeoutsGuest
+	
+	GetWinner()
+	GetLoser()
+	GetFoulsHome()
+	GetFoulsGuest()
+	GetDisqualifiedHome()
+	GetDisqualifiedGuest()
+	
+	
+VolleyballMatch:
+	homeTeam
+	guestTeam
+	league
+	partialScore
+	timeoutsHome
+	timeoutsGuest
+	length
+	
+	GetWinner()
+	GetLoser()
+	
+TennisMatch:
+	player1
+	player2
+	league
+	partialScore
+	length
+	
+	GetWinner()
+	GetLoser()
