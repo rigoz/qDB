@@ -20,5 +20,8 @@
 			}
 #	endif
 
+typedef unsigned int uint32;
+typedef unsigned short uint16;
+
 
 #endif
