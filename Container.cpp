@@ -62,7 +62,7 @@ bool Container<Item>::operator==(const Container &cont) const
 		return false;
 	
 	for (Const_iterator i = Begin(); i != End(); ++i)
-		if (cont.Find((*i)->GetData()) == NULL)
+		if (cont.Find((*i)->GetInfo()) == NULL)
 			return false; // exit as soon as i cant find an item from the caller object in "cont"
 		
 	return true;
@@ -90,7 +90,7 @@ template <class Item>
 Container<Item> Container<Item>::operator+(Container cont) const
 {
 	for(Const_iterator i = Begin(); i != End(); ++i) 
-	    cont.Insert((*i)->GetData());
+	    cont.Insert((*i)->GetInfo());
 	
 	return cont;
 }
@@ -110,7 +110,7 @@ Container<Item> Container<Item>::operator-(const Container &cont) const
 
 	res = *this;
 	for(Const_iterator i = cont.Begin(); i != cont.End(); ++i)
-		res.Remove((*i)->GetData());
+		res.Remove((*i)->GetInfo());
 
 	return res;
 }
@@ -196,7 +196,7 @@ void Container<Item>::RemoveAll(const Item &item)
 	    return;
    
     for(Iterator i = Begin(); i != End();)
-	    if ((*i)->GetData() == item)
+	    if ((*i)->GetInfo() == item)
 	    {
 			Iterator next((*i)->m_next); // Save next pointer
 			Remove(*i);
@@ -216,7 +216,7 @@ typename Container<Item>::Record* Container<Item>::Find(const Item &item)
 		return NULL;
 		
 	for (Iterator i = Begin(); i != End(); ++i)
-		if ((*i)->GetData() == item)
+		if ((*i)->GetInfo() == item)
 			return *i;
 }
 
@@ -227,7 +227,7 @@ const typename Container<Item>::Record* Container<Item>::Find(const Item &item) 
 		return NULL;
 		
 	for (Const_iterator i = Begin(); i != End(); ++i)
-		if ((*i)->GetData() == item)
+		if ((*i)->GetInfo() == item)
 			return *i;
 }
 
