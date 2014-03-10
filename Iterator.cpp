@@ -2,7 +2,7 @@
 template <class Item>
 typename Container<Item>::Iterator& Container<Item>::Iterator::operator++()
 {
-	pointer = pointer->m_next;
+	m_data = m_data->m_next;
 	return *this;
 }
 
@@ -17,7 +17,7 @@ typename Container<Item>::Iterator Container<Item>::Iterator::operator++(int)
 template <class Item>
 typename Container<Item>::Iterator& Container<Item>::Iterator::operator--()
 {
-	pointer = pointer->m_prev;
+	m_data = m_data->m_prev;
 	return *this;
 }
 
@@ -32,7 +32,7 @@ typename Container<Item>::Iterator Container<Item>::Iterator::operator--(int)
 template <class Item>
 typename Container<Item>::Record* Container<Item>::Iterator::operator*()
 {
-	return pointer; 
+	return m_data; 
 }
 // ------------------------------>
 
@@ -42,7 +42,7 @@ typename Container<Item>::Record* Container<Item>::Iterator::operator*()
 template <class Item>
 typename Container<Item>::Const_iterator& Container<Item>::Const_iterator::operator++()
 {
-	pointer = pointer->m_next;
+	m_data = m_data->m_next;
 	return *this;
 }
 
@@ -57,7 +57,7 @@ typename Container<Item>::Const_iterator Container<Item>::Const_iterator::operat
 template <class Item>
 typename Container<Item>::Const_iterator& Container<Item>::Const_iterator::operator--()
 {
-	pointer = pointer->m_prev;
+	m_data = m_data->m_prev;
 	return *this;
 }
 
@@ -72,6 +72,6 @@ typename Container<Item>::Const_iterator Container<Item>::Const_iterator::operat
 template <class Item>
 const typename Container<Item>::Record* Container<Item>::Const_iterator::operator*() const
 {
-	return pointer; 
+	return m_data;
 }
 // ------------------------------>
