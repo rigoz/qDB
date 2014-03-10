@@ -4,7 +4,6 @@
 #include <iostream>
 #include "SharedDefines.h"
 
-
 template<class Item> class Container;
 template<class Item> std::ostream& operator<<(std::ostream &os, const Container<Item> &cont);
 
@@ -52,7 +51,7 @@ private:
 	
 	
 		// <------------ Helpers --------------
-		Item GetData() const;
+		Item GetInfo() const;
 		// ----------------------------------->
 	};
 	
@@ -68,16 +67,16 @@ public:
 	class Iterator
 	{
 	public:
-		Record *pointer;
+		Record *m_data;
     
 	public:
 		friend class Const_iterator;
-		Iterator(Record *pt) : pointer(pt) {}
-		Iterator(const Iterator &i) : pointer(i.pointer) {}
+		Iterator(Record *pt) : m_data(pt) {}
+		Iterator(const Iterator &i) : m_data(i.m_data) {}
 		
 		// <----------- Operators ------------
-		bool operator==(const Iterator &i) const { return pointer == i.pointer; }
-		bool operator!=(const Iterator &i) const { return pointer != i.pointer; }
+		bool operator==(const Iterator &i) const { return m_data == i.m_data; }
+		bool operator!=(const Iterator &i) const { return m_data != i.m_data; }
 		Iterator& operator++();
 		Iterator operator++(int);
 		Iterator& operator--();
@@ -85,23 +84,23 @@ public:
 		Record* operator*();
 		
 		// op<< for a nested template class cannot be implemented outside 
-		friend std::ostream& operator<<(std::ostream &os, const typename Container<Item>::Iterator &i) { return os << *(i.pointer);}
+		friend std::ostream& operator<<(std::ostream &os, const typename Container<Item>::Iterator &i) { return os << *(i.m_data);}
 		// ----------------------------------->
 	};
 	
 	class Const_iterator
 	{
 	private:
-	    const Record *pointer;
+	    const Record *m_data;
     
 	public:
-		Const_iterator(Record *pt) : pointer(pt) {}
-		Const_iterator(const Const_iterator &i) : pointer(i.pointer) {}
-		Const_iterator(const Iterator &i) : pointer(i.pointer) {}
+		Const_iterator(Record *pt) : m_data(pt) {}
+		Const_iterator(const Const_iterator &i) : m_data(i.m_data) {}
+		Const_iterator(const Iterator &i) : m_data(i.m_data) {}
 		
 		// <----------- Operators ------------
-		bool operator==(const Const_iterator &i) const { return pointer == i.pointer; }
-		bool operator!=(const Const_iterator &i) const { return pointer != i.pointer; }
+		bool operator==(const Const_iterator &i) const { return m_data == i.m_data; }
+		bool operator!=(const Const_iterator &i) const { return m_data != i.m_data; }
 		Const_iterator& operator++();  
 		Const_iterator operator++(int);
 		Const_iterator& operator--();
@@ -109,7 +108,7 @@ public:
 		const Record* operator*() const;
 		
 		// op<< for a nested template class cannot be implemented outside 
-		friend std::ostream& operator<<(std::ostream &os, const typename Container<Item>::Const_iterator &i) { return os << *(i.pointer); }
+		friend std::ostream& operator<<(std::ostream &os, const typename Container<Item>::Const_iterator &i) { return os << *(i.m_data); }
 		// ----------------------------------->
 	};
     
