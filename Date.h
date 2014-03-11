@@ -33,6 +33,11 @@ private:
 	    
 	}
 	
+	static uint16 LeapYearBonus(uint16 month, uint16 year)
+	{
+	    return (IsLeapYear(year) && month > 2) ? 1 : 0;
+	}
+	
 	static uint16 GetLeapYears(uint16 year)
 	{
 	    return (year < firstLeapyear) ? 0 : ((year-firstLeapyear) / leapRecurrence);
@@ -46,11 +51,20 @@ public:
 	    m_days = days < 0 ? 0 : days;
 	}
 	
-	Date(uint16 day, uint16 month, uint16 year)
+	Date(int day, int month, int year)
 	{
+	    if (year < baseYear)
+		year = baseYear;
+	    
+	    if (month > 12 || month < 1)
+		month = 1;
+	    
+	    if (day > monthsLength[month-1] || day < 1)
+		day = 1;
+	    
 	    uint16 daysForYear = (year > baseYear) ? (year - baseYear) * 365 + GetLeapYears(year) : 0;
 	    
-	    m_days = day-1 + GetDaysUntilMonth(month) + daysForYear + (IsLeapYear(year) && month > 2 ? 1 : 0);
+	    m_days = day-1 + GetDaysUntilMonth(month) + daysForYear + LeapYearBonus(month, year);
 	}
 	
 	Date(const Date &date) : m_days(date.m_days) {}
