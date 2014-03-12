@@ -2,7 +2,7 @@
 
 uint32 Match::autoIncrementValue = 0;
 
-uint32 Match::GetNextId() const
+uint32 Match::GetNextId()
 {
 	return ++autoIncrementValue;
 }
@@ -28,7 +28,7 @@ Match::Match(const Match &mtc)
 	m_closed = mtc.m_closed;
 }
 
-	
+
 // <--------- Getters ------------
 uint32 Match::GetId() const
 {
@@ -60,13 +60,13 @@ bool Match::IsClosed() const
 	return m_closed;
 }
 // ------------------------------>
-	
+
 // <--------- Setters -----------
 void Match::SetResult(int16 homeScore, int16 guestScore)
 {
 	if (IsClosed())
 		return;
-		
+
 	m_result.home = homeScore;
 	m_result.guest = guestScore;
 	Close();
@@ -125,7 +125,7 @@ std::ostream& operator<<(std::ostream &os, const Match &mtc)
 	}
 	else
 		os << "- match is still open\n\n";
-		
+
 	return os;
 }
 // ------------------------------>
