@@ -23,15 +23,14 @@ private:
 	Date m_date;
 	std::string m_location;
 	bool m_closed;
-	
+
 	static uint32 autoIncrementValue;
-	uint32 GetNextId() const;
-	
+
 public:
 	Match(std::string ref, Date date, std::string location);
 	Match(const Match &m);
-	//virtual ~Match();
-	
+	virtual ~Match() = 0;
+
 	// <--------- Getters ------------
 	uint32 GetId() const;
 	Result GetResult() const;
@@ -39,16 +38,17 @@ public:
 	Date GetDate() const;
 	std::string GetLocation() const;
 	bool IsClosed() const;
+	static uint32 GetNextId();
 	// ------------------------------>
-	
+
 	// <--------- Setters -----------
 	virtual void SetResult(int16 homeScore, int16 guestScore);
 	void SetReferee(std::string newReferee);
 	void Postpone(Date newDate);
 	void SetLocation(std::string location);
-	virtual void Close();
+	void Close();
 	// ------------------------------>
-	
+
 	// <-------- Operators -----------
 	bool operator==(const Match &mtc) const;
 	bool operator!=(const Match &mtc) const;
