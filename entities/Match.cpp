@@ -1,22 +1,23 @@
 #include "Match.h"
 
-Match::autoIncrementValue = 0;
+uint32 Match::autoIncrementValue = 0;
 
 uint32 Match::GetNextId() const
 {
 	return ++autoIncrementValue;
 }
 
-Match::Match(Referee ref, Date date, std::string location)
+Match::Match(std::string ref, Date date, std::string location)
 {
 	m_id = GetNextId();
-	m_result = NULL;
+	m_result.home = -1;
+	m_result.guest = -1;
 	m_referee = ref;
 	m_date = date;
 	m_location = location;
 	m_closed = false;
-	
 }
+
 Match::Match(const Match &mtc)
 {
 	m_id = GetNextId();
@@ -39,7 +40,7 @@ Result Match::GetResult() const
 	return m_result;
 }
 
-Referee Match::GetReferee() const
+std::string Match::GetReferee() const
 {
 	return m_referee;
 }
@@ -61,16 +62,17 @@ bool Match::IsClosed() const
 // ------------------------------>
 	
 // <--------- Setters -----------
-void Match::SetResult(uint16 homeScore, uint16 guestScore)
+void Match::SetResult(int16 homeScore, int16 guestScore)
 {
 	if (IsClosed())
-	{
-		m_result.home = homeScore;
-		m_result.guest = guestScore;
-	}
+		return;
+		
+	m_result.home = homeScore;
+	m_result.guest = guestScore;
+	Close();
 }
 
-void Match::SetReferee(Referee newReferee)
+void Match::SetReferee(std::string newReferee)
 {
 	if (IsClosed() == false)
 		m_referee = newReferee;
@@ -92,3 +94,38 @@ void Match::Close()
 {
 	m_closed = true;
 }
+// ------------------------------>
+
+
+// <-------- Operators -----------
+bool Match::operator==(const Match &mtc) const
+{
+	// we are going to check equality member by member
+	// for every member that is 
+}
+
+bool Match::operator!=(const Match &mtc) const
+{
+
+}
+std::ostream& operator<<(std::ostream &os, const Match &mtc)
+{
+	os << "Match details:\n";
+	os << "- id: " << mtc.m_id << "\n";
+	os << "- date: " << mtc.m_date << "\n";
+	os << "- location: " << mtc.m_location << "\n";
+	os << "- referee: " << mtc.m_referee << "\n";
+	if (mtc.IsClosed())
+	{
+		os << "- match is closed ";
+		if (mtc.m_result.home < 0 && mtc.m_result.guest < 0)
+			os << "but no result has been submitted\n\n";
+		else
+			os << "with result: Home " << mtc.m_result.home << "-" << mtc.m_result.guest << " Guest\n\n";
+	}
+	else
+		os << "- match is still open\n\n";
+		
+	return os;
+}
+// ------------------------------>
