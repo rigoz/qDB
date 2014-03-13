@@ -35,8 +35,3 @@
 .Trashes
 ehthumbs.db
 Thumbs.db
-
-# Main files (for now) #
-######################
-main.cpp
-Main.cpp
