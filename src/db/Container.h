@@ -2,6 +2,7 @@
 #define CONTAINER_H
 
 #include <iostream>
+#include <fstream>
 #include "SharedDefines.h"
 
 template<class Item> class Container;
@@ -13,7 +14,7 @@ class Container
 private:
 	class Record
 	{
-	    
+		
 	friend class Container;
 	
 	private:
@@ -40,7 +41,7 @@ private:
 		// op<< for a nested template class cannot be implemented outside 
 		friend std::ostream& operator<<(std::ostream &os, const typename Container<Item>::Record &record)
 		{
-			os << record.m_info << " ";
+			os << record.m_info << "\n";
 			
 			if (record.m_next != NULL)
 				os << *(record.m_next);
@@ -68,7 +69,7 @@ public:
 	{
 	public:
 		Record *m_data;
-    
+	
 	public:
 		friend class Const_iterator;
 		Iterator(Record *pt) : m_data(pt) {}
@@ -91,8 +92,8 @@ public:
 	class Const_iterator
 	{
 	private:
-	    const Record *m_data;
-    
+		const Record *m_data;
+	
 	public:
 		Const_iterator(Record *pt) : m_data(pt) {}
 		Const_iterator(const Const_iterator &i) : m_data(i.m_data) {}
@@ -111,7 +112,7 @@ public:
 		friend std::ostream& operator<<(std::ostream &os, const typename Container<Item>::Const_iterator &i) { return os << *(i.m_data); }
 		// ----------------------------------->
 	};
-    
+	
 	Container();
 	Container(const Item &item);
 	Container(const Container &cont);
@@ -130,14 +131,17 @@ public:
 	
 	// <-------- List management ----------
 	void Insert(const Item &item);
-	void Remove(const Item &item);
 	void Remove(Record *record);
 	void RemoveAll(const Item &item);
-	Record* Find(const Item &item);
-	const Record* Find(const Item &item) const;
-	void Update(Record *record, const Item &item);
+	Container Find(const Item &item);
+	const Container Find(const Item &item) const;
+	static void Update(Record *record, const Item &item);
+	Record* GetRecord(const Item &item);
 	// ----------------------------------->
 	
+	// <----------- File I/O --------------
+	void Save() const;
+	// ----------------------------------->
 	
 	// <----------- Iterators -------------
 	// First element

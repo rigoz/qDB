@@ -2,17 +2,9 @@
 #define MATCH_H
 
 #include <string>
-#include <ctime>
 #include <iostream>
 #include "SharedDefines.h"
-#include "PhoneNumber.h"
 #include "Date.h"
-
-struct Result
-{
-	int16 home;
-	int16 guest;
-};
 
 class Match
 {

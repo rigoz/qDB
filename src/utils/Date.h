@@ -19,88 +19,104 @@ private:
 	
 	static uint16 GetDaysUntilMonth(uint16 month)
 	{
-	    uint16 sum = 0;
-	    for (int i=0; i<month-1; i++)
+		uint16 sum = 0;
+		for (int i=0; i<month-1; i++)
 		sum += monthsLength[i];
-	    
-	    
-	    return sum;
+		
+		
+		return sum;
 	}
 	
 	static bool IsLeapYear(uint16 year)
 	{
-	    return ((year-firstLeapyear) % leapRecurrence) == 0;
-	    
+		return ((year-firstLeapyear) % leapRecurrence) == 0;
+		
 	}
 	
 	static uint16 LeapYearBonus(uint16 month, uint16 year)
 	{
-	    return (IsLeapYear(year) && month > 2) ? 1 : 0;
+		return (IsLeapYear(year) && month > 2) ? 1 : 0;
 	}
 	
 	static uint16 GetLeapYears(uint16 year)
 	{
-	    return (year < firstLeapyear) ? 0 : ((year-firstLeapyear) / leapRecurrence);
+		return (year < firstLeapyear) ? 0 : ((year-firstLeapyear) / leapRecurrence);
 	}
 
 public:
 	Date() : m_days(0) {}
-    
+	
 	Date(int days)
 	{
-	    m_days = days < 0 ? 0 : days;
+		m_days = days < 0 ? 0 : days;
 	}
 	
 	Date(int day, int month, int year)
 	{
-	    if (year < baseYear)
+		if (year < baseYear)
 		year = baseYear;
-	    
-	    if (month > 12 || month < 1)
+		
+		if (month > 12 || month < 1)
 		month = 1;
-	    
-	    if (day > monthsLength[month-1] || day < 1)
+		
+		if (day > monthsLength[month-1] || day < 1)
 		day = 1;
-	    
-	    uint16 daysForYear = (year > baseYear) ? (year - baseYear) * 365 + GetLeapYears(year) : 0;
-	    
-	    m_days = day-1 + GetDaysUntilMonth(month) + daysForYear + LeapYearBonus(month, year);
+		
+		uint16 daysForYear = (year > baseYear) ? (year - baseYear) * 365 + GetLeapYears(year) : 0;
+		
+		m_days = day-1 + GetDaysUntilMonth(month) + daysForYear + LeapYearBonus(month, year);
 	}
 	
 	Date(const Date &date) : m_days(date.m_days) {}
 	
 	std::string ToString() const
 	{
-	    uint16 year = m_days / 365 + baseYear;
-	    uint16 days = m_days % 365 - GetLeapYears(year) + 1;
-	    uint16 month = 1;
-	    for (int i=0; i<12; i++)
+		uint16 year = m_days / 365 + baseYear;
+		uint16 days = m_days % 365 - GetLeapYears(year) + 1;
+		
+		uint16 month = 1;
+		for (int i=0; i<12; i++)
 		if (days > monthsLength[i])
 		{
-		    month++;
-		    days -= monthsLength[i];
+			month++;
+			days -= monthsLength[i];
 		}
-	    
-	    std::ostringstream oss;
-	    oss << days << "/" << month << "/" << year;
-	    return oss.str();
+		
+		std::ostringstream oss;
+		oss << days << "/" << month << "/" << year;
+		return oss.str();
+	}
+	
+	uint32 GetDays() const
+	{
+		return m_days;
 	}
 	
 	friend std::ostream& operator<<(std::ostream &os, const Date &date)
 	{
-	    return os << date.ToString();
+		return os << date.ToString();
 	}
 	
 	Date operator+(int n)
 	{
-	    Date t(m_days + n);
-	    return t;
+		Date t(m_days + n);
+		return t;
 	}
 	
 	Date operator-(int n)
 	{
-	    Date t(m_days - n);
-	    return t;
+		Date t(m_days - n);
+		return t;
+	}
+	
+	bool operator==(const Date &d) const
+	{
+		return m_days == d.m_days;
+	}
+	
+	bool operator!=(const Date &d) const
+	{
+		return m_days != d.m_days;
 	}
 };
 

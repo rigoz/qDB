@@ -11,38 +11,37 @@
 class TennisMatch : public Match
 {
 private:
-    std::string m_player1;
-    std::string m_player2;
-    std::string m_league;
-    Result m_partialScores[5];
-    uint16 m_length;
-    
+	std::string m_player1;
+	std::string m_player2;
+	std::string m_league;
+	Result m_partialScores[5];
+	uint16 m_length;
+	
 public:
-    TennisMatch(std::string ref, Date date, std::string location, std::string player1, std::string player2, std::string league);
-    TennisMatch(const TennisMatch &tmtc);
-    
-     // <--------- Getters ------------
-    std::string GetPlayer1() const;
-    std::string GetPlayer2() const;
-    std::string GetWinner() const;
-    std::string GetLoser() const;
-    uint16 GetLength() const;
-    Result GetPartialScore(uint16 set);
-    std::string GetLeague() const;
-    // ------------------------------>
-    
-    // <--------- Setters -----------
-    void SetLength(uint16 length);
-    void SetPartial(uint16 set, uint16 p1score, uint16 p2score);
-    void SetPartial(uint16 set, Result res);
-    virtual void SetResult();
-    // ------------------------------>
-    
-    // <-------- Operators -----------
-    bool operator==(const Match &mtc) const;
-    bool operator!=(const Match &mtc) const;
-    friend std::ostream& operator<<(std::ostream &os, const VolleyballMatch &mtc);
-    // ------------------------------>
+	TennisMatch(std::string ref = "", Date date = 0, std::string location = "", std::string home = "", std::string guest = "", std::string league = "");
+	
+	 // <--------- Getters ------------
+	std::string GetPlayer1() const;
+	std::string GetPlayer2() const;
+	std::string GetWinner() const;
+	std::string GetLoser() const;
+	uint16 GetLength() const;
+	Result GetPartialScore(uint16 set) const;
+	std::string GetLeague() const;
+	// ------------------------------>
+	
+	// <--------- Setters -----------
+	void SetLength(uint16 length);
+	void SetPartial(uint16 set, uint16 p1score, uint16 p2score);
+	void SetPartial(uint16 set, Result res);
+	virtual void SetResult();
+	// ------------------------------>
+	
+	// <-------- Operators -----------
+	bool operator==(const Match &mtc) const;
+	bool operator!=(const Match &mtc) const;
+	friend std::ostream& operator<<(std::ostream &os, const TennisMatch &tmtc);
+	// ------------------------------>
 };
 
 #endif

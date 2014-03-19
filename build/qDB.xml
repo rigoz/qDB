@@ -1,0 +1,76 @@
+<qDB>
+	<match type="tennis">
+		<id>4</id>
+		<date>1/3/2014</date>
+		<location>tloc</location>
+		<referee>tref</referee>
+		<result>-1 | -1</result>
+		<closed>0</closed>
+
+		<player1>tp1</player1>
+		<player2>tp2</player2>
+		<league>tleague</league>
+		<length>0</length>
+		<partials>
+			<result>0 | 0</result>
+			<result>0 | 0</result>
+			<result>0 | 0</result>
+			<result>0 | 0</result>
+			<result>0 | 0</result>
+		</partials>
+	</match>
+
+	<match type="basket">
+<id>1</id>
+		<date>1/3/2014</date>
+		<location>bloc</location>
+		<referee>bref</referee>
+		<result>-1 | -1</result>
+		<closed>0</closed>
+
+		<home>bhome</home>
+		<guest>bguest</guest>
+		<league>bleague</league>
+		<timeoutshome>-1</timeoutshome>
+		<timeoutsguest>-1</timeoutsguest>
+	</match>
+
+	<match type="football">
+<id>2</id>
+		<date>1/3/2014</date>
+		<location>floc</location>
+		<referee>fref</referee>
+		<result>-1 | -1</result>
+		<closed>0</closed>
+
+		<home>fhome</home>
+		<guest>fguest</guest>
+		<league>fleague</league>
+		<timeoutshome>0</timeoutshome>
+	</match>
+
+	<match type="volley">
+<id>3</id>
+		<date>1/3/2014</date>
+		<location>vloc</location>
+		<referee>vref</referee>
+		<result>-1 | -1</result>
+		<closed>0</closed>
+
+		<home>vhome</home>
+		<guest>vguest</guest>
+		<league>vleague</league>
+		<timeoutshome>-1</timeoutshome>
+		<timeoutsguest>-1</timeoutsguest>
+		<length>0</length>
+		<partials>
+			<result>0 | 0</result>
+			<result>0 | 0</result>
+			<result>0 | 0</result>
+			<result>0 | 0</result>
+			<result>0 | 0</result>
+		</partials>
+	</match>
+
+	<size>4</size>
+</qDB>

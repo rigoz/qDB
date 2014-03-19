@@ -20,13 +20,18 @@ Match::Match(std::string ref, Date date, std::string location)
 
 Match::Match(const Match &mtc)
 {
-	m_id = GetNextId();
-	m_result = mtc.m_result;
-	m_referee = mtc.m_referee;
-	m_date = mtc.m_date;
-	m_location = mtc.m_location;
-	m_closed = mtc.m_closed;
+	if (this != &mtc)
+	{
+		m_id = GetNextId();
+		m_result = mtc.m_result;
+		m_referee = mtc.m_referee;
+		m_date = mtc.m_date;
+		m_location = mtc.m_location;
+		m_closed = mtc.m_closed;
+	}
 }
+
+Match::~Match() {}
 
 
 // <--------- Getters ------------
@@ -100,31 +105,47 @@ void Match::Close()
 // <-------- Operators -----------
 bool Match::operator==(const Match &mtc) const
 {
-	// we are going to check equality member by member
-	// for every member that is 
+	// Check equality only on defined members
+	if (mtc.m_result.home > -1 && (m_result.home != mtc.m_result.home || m_result.guest != mtc.m_result.guest))
+		return false;
+	
+	if (mtc.m_referee != "" && m_referee != mtc.m_referee)
+		return false;
+		
+	if (mtc.m_date.GetDays() != 0 && m_date != mtc.m_date)
+		return false;
+		
+	if (mtc.m_location != "" && m_location != mtc.m_location)
+		return false;
+		
+	return true;
 }
 
 bool Match::operator!=(const Match &mtc) const
 {
-
+	// Check difference only on defined members
+	if (mtc.m_result.home > -1 && (m_result.home == mtc.m_result.home || m_result.guest == mtc.m_result.guest))
+		return false;
+	
+	if (mtc.m_referee != "" && m_referee == mtc.m_referee)
+		return false;
+		
+	if (mtc.m_date.GetDays() != 0 && m_date == mtc.m_date)
+		return false;
+		
+	if (mtc.m_location != "" && m_location == mtc.m_location)
+		return false;
+		
+	return true;
 }
 std::ostream& operator<<(std::ostream &os, const Match &mtc)
 {
-	os << "Match details:\n";
-	os << "- id: " << mtc.m_id << "\n";
-	os << "- date: " << mtc.m_date << "\n";
-	os << "- location: " << mtc.m_location << "\n";
-	os << "- referee: " << mtc.m_referee << "\n";
-	if (mtc.IsClosed())
-	{
-		os << "- match is closed ";
-		if (mtc.m_result.home < 0 && mtc.m_result.guest < 0)
-			os << "but no result has been submitted\n\n";
-		else
-			os << "with result: Home " << mtc.m_result.home << "-" << mtc.m_result.guest << " Guest\n\n";
-	}
-	else
-		os << "- match is still open\n\n";
+	os << "<id>" << mtc.m_id << "</id>\n";
+	os << "\t\t<date>" << mtc.m_date << "</date>\n";
+	os << "\t\t<location>" << mtc.m_location << "</location>\n";
+	os << "\t\t<referee>" << mtc.m_referee << "</referee>\n";
+	os << "\t\t<result>" << mtc.m_result.home << " | " << mtc.m_result.guest << "</result>\n";
+	os << "\t\t<closed>" << mtc.m_closed << "</closed>\n";
 
 	return os;
 }

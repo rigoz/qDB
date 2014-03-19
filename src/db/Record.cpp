@@ -70,12 +70,12 @@ template <class Item>
 typename Container<Item>::Record* Container<Item>::Record::DeepCopy(Container<Item>::Record *prev , Container<Item>::Record *curr)
 {	
 	if (curr == NULL) // Reached the end of the list to copy
-	    return NULL;
+		return NULL;
 	
 	Record *t = new typename Container<Item>::Record(curr->m_info);
 	t->m_prev = prev;
 	t->m_next = DeepCopy(t, curr->m_next);
-	return t;                                                   
+	return t;												   
 }
 
 // Returns data contained in m_info
